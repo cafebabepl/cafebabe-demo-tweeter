@@ -5,10 +5,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Wyszukiwanie tweetów</title>
 </head>
 <body>
-	<h2>Tweeter demo home</h2>
-	<a href="<c:url value="/user/add" />">Dodaj użytkownika</a> | <a href="<c:url value="/tweet/add" />">Dodaj tweeta</a><br/>
-	<a href="<c:url value="/user/all" />">Lista użytkowników</a> | <a href="<c:url value="/user/search-tweets" />">Wyszukaj tweeta</a><br/>
+	<!-- formularz wyszukiwania -->
+	<center>
+	<form action="<c:url value="/user/search-tweets" />" method="post">
+		<input type="text" name="title" /><br />
+		<button type="submit">Szukaj</button>
+	</form>
+	</center>
+	
+	<!-- wyniki wyszukiwania -->
+	<c:forEach items="${tweets}" var="tweet">
+		<p>
+			<i><c:out value="${tweet.title}" /></i><br />
+			<c:out value="${tweet.text}" />
+		</p>
+	</c:forEach>
 </body>
 </html>
