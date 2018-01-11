@@ -25,8 +25,9 @@
 					<td><c:out value = "${user.lastName}"/></td>
 					<td><c:out value = "${user.email}" default="brak"/></td>
 					<td>
+						<a href="<c:url value="/user/${user.id}/tweets"/>">Tweety</a>
 						<a href="<c:url value="/user/delete/${user.id}"/>">Usuń</a>
-						<!-- <a href="<c:url value="/user/edit/${user.id}"/>">Edytuj</a>-->
+						<a href="<c:url value="/user/edit/${user.id}"/>">Edytuj</a>
 					</td>
 				</tr>
 			</c:forEach>

@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 @Table(name = "tweeter_user")
 public class User {
@@ -22,18 +25,28 @@ public class User {
 	private long id;
 
 	@Column(nullable = false)
+	@NotBlank(message = "Imię użytkownika nie może być puste.")
 	private String firstName;
 
 	@Column(nullable = false)
+	@NotBlank(message = "Nazwisko użytkownika nie może być puste.")
 	private String lastName;
 
+	@Email(message = "Nieprawidłowy email")
 	private String email;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	// TODO lazy
+//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Tweet> tweets;
 
 	public long getId() {
 		return id;
+	}
+	
+	// niezbędny dla prawidłowego bindowania
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -69,8 +82,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", tweets=" + tweets + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
 	}
 
 }

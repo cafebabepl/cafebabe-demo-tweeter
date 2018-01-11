@@ -11,7 +11,6 @@ public class HelloController {
 	@RequestMapping("/hello")
 	@ResponseBody
 	public String hello(@RequestParam(required = false, defaultValue = "Unknown") String name) {
-		// TODO loger
 		return String.format("Hello %s!", name);
 	}
 

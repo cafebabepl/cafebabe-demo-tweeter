@@ -2,10 +2,15 @@ package pl.cafebabe.demo.tweeter.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +24,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	Validator validator;	
 
 	@RequestMapping("/all")
 	public String userAll(Model model) {
@@ -34,14 +42,26 @@ public class UserController {
 	}
 
 	@GetMapping("/add")
-	public String userAddForm(Model model) {
+	public String userAdd(Model model) {
 		model.addAttribute("user", new User());
-		return "user-add";
+		return "user-form";
 	}
 
-	@PostMapping("/add")
-	public String userAddSubmit() {
-		return "redirect:/user/all";
+	@GetMapping("/edit/{id}")
+	public String userEdit(Model model, @PathVariable Long id) {
+		User user = userRepository.findOne(id);
+		model.addAttribute("user", user);
+		return "user-form";
+	}
+	
+	@PostMapping("/save")
+	public String userSave(@ModelAttribute @Valid User user, BindingResult result) {
+		if (result.hasErrors()) {
+			return "user-form";
+		} else {
+			userRepository.save(user);
+			return "redirect:/user/all";
+		}
 	}
 
 }
